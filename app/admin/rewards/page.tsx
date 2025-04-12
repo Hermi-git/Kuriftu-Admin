@@ -64,7 +64,7 @@ const initialRewards = [
   },
   {
     id: "5",
-    name: "Airport Transfer",
+    name: "Airport transfer",
     description: "Complimentary airport transfer to/from the resort.",
     pointValue: 1000,
     isActive: true,
