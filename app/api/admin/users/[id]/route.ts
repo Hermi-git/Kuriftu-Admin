@@ -4,8 +4,8 @@ import { NextResponse } from "next/server"
 let users = [
   {
     id: "1",
-    name: "John Doe",
-    email: "john@example.com",
+    name: "Amanuel Tesfaye",
+    email: "amanuel@example.com",
     status: "active",
     tier: "Gold",
     points: 1250,
@@ -13,8 +13,8 @@ let users = [
   },
   {
     id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
+    name: "Meseret Alemu",
+    email: "meseret@example.com",
     status: "active",
     tier: "Silver",
     points: 750,
@@ -22,8 +22,8 @@ let users = [
   },
   {
     id: "3",
-    name: "Michael Johnson",
-    email: "michael@example.com",
+    name: "Bekele Tadesse",
+    email: "bekele@example.com",
     status: "inactive",
     tier: "Bronze",
     points: 350,
@@ -31,8 +31,8 @@ let users = [
   },
   {
     id: "4",
-    name: "Sarah Williams",
-    email: "sarah@example.com",
+    name: "Saba Desta",
+    email: "saba@example.com",
     status: "active",
     tier: "Platinum",
     points: 2500,
@@ -40,8 +40,8 @@ let users = [
   },
   {
     id: "5",
-    name: "David Brown",
-    email: "david@example.com",
+    name: "Tesfaye Abebe",
+    email: "tesfaye@example.com",
     status: "active",
     tier: "Gold",
     points: 1100,
@@ -96,8 +96,6 @@ export async function DELETE(request: Request, { params }: { params: { id: strin
   if (userIndex === -1) {
     return NextResponse.json({ error: "User not found" }, { status: 404 })
   }
-
-  // Remove user
   users = users.filter((user) => user.id !== id)
 
   return NextResponse.json({ success: true })

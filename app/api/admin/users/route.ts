@@ -4,8 +4,8 @@ import { NextResponse } from "next/server"
 const users = [
   {
     id: "1",
-    name: "John Doe",
-    email: "john@example.com",
+    name: "Amanuel Tesfaye",
+    email: "amanuel@example.com",
     status: "active",
     tier: "Gold",
     points: 1250,
@@ -13,8 +13,8 @@ const users = [
   },
   {
     id: "2",
-    name: "Jane Smith",
-    email: "jane@example.com",
+    name: "Meseret Alemu",
+    email: "meseret@example.com",
     status: "active",
     tier: "Silver",
     points: 750,
@@ -22,8 +22,8 @@ const users = [
   },
   {
     id: "3",
-    name: "Michael Johnson",
-    email: "michael@example.com",
+    name: "Bekele Tadesse",
+    email: "bekele@example.com",
     status: "inactive",
     tier: "Bronze",
     points: 350,
@@ -31,8 +31,8 @@ const users = [
   },
   {
     id: "4",
-    name: "Sarah Williams",
-    email: "sarah@example.com",
+    name: "Saba Desta",
+    email: "saba@example.com",
     status: "active",
     tier: "Platinum",
     points: 2500,
@@ -40,14 +40,15 @@ const users = [
   },
   {
     id: "5",
-    name: "David Brown",
-    email: "david@example.com",
+    name: "Tesfaye Abebe",
+    email: "tesfaye@example.com",
     status: "active",
     tier: "Gold",
     points: 1100,
     joinDate: "2023-01-30",
   },
 ]
+
 
 export async function GET() {
   return NextResponse.json(users)

@@ -1,7 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, Download, MoreHorizontal, Plus, Search, SlidersHorizontal } from "lucide-react"
+import {
+  ChevronDown,
+  Download,
+  MoreHorizontal,
+  Plus,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -28,8 +35,29 @@ import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
 import { useToast } from "@/components/ui/use-toast"
 
-// Mock data
-const initialServices = [
+// Define a Service interface
+interface Service {
+  id: string
+  name: string
+  category: string
+  description: string
+  pointValue: number
+  createdAt: string
+}
+
+// Array of service categories
+const categories = [
+  "Wellness",
+  "Activities",
+  "Dining",
+  "Accommodation",
+  "Transportation",
+  "Entertainment",
+  "Other",
+]
+
+// Mock data typed as an array of Service objects
+const initialServices: Service[] = [
   {
     id: "1",
     name: "Spa Treatment",
@@ -72,15 +100,14 @@ const initialServices = [
   },
 ]
 
-const categories = ["Wellness", "Activities", "Dining", "Accommodation", "Transportation", "Entertainment", "Other"]
-
 export default function ServicesPage() {
-  const [services, setServices] = useState(initialServices)
+  const [services, setServices] = useState<Service[]>(initialServices)
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddServiceOpen, setIsAddServiceOpen] = useState(false)
   const [isEditServiceOpen, setIsEditServiceOpen] = useState(false)
-  const [currentService, setCurrentService] = useState(null)
-  const [newService, setNewService] = useState({
+  const [currentService, setCurrentService] = useState<Service | null>(null)
+  // newService does not include id or createdAt (which are auto-generated)
+  const [newService, setNewService] = useState<Omit<Service, "id" | "createdAt">>({
     name: "",
     category: "Wellness",
     description: "",
@@ -92,12 +119,12 @@ export default function ServicesPage() {
     (service) =>
       service.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
       service.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      service.category.toLowerCase().includes(searchTerm.toLowerCase()),
+      service.category.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleAddService = () => {
     const id = (services.length + 1).toString()
-    const service = {
+    const service: Service = {
       id,
       ...newService,
       createdAt: new Date().toISOString().split("T")[0],
@@ -118,13 +145,17 @@ export default function ServicesPage() {
     })
   }
 
-  const handleEditService = (service) => {
+  const handleEditService = (service: Service) => {
     setCurrentService(service)
     setIsEditServiceOpen(true)
   }
 
   const handleUpdateService = () => {
-    const updatedServices = services.map((service) => (service.id === currentService.id ? currentService : service))
+    if (!currentService) return
+
+    const updatedServices = services.map((service) =>
+      service.id === currentService.id ? currentService : service
+    )
 
     setServices(updatedServices)
     setIsEditServiceOpen(false)
@@ -135,7 +166,7 @@ export default function ServicesPage() {
     })
   }
 
-  const handleDeleteService = (id) => {
+  const handleDeleteService = (id: string) => {
     const updatedServices = services.filter((service) => service.id !== id)
     setServices(updatedServices)
 
@@ -145,25 +176,7 @@ export default function ServicesPage() {
     })
   }
 
-  const getCategoryColor = (category) => {
-    switch (category) {
-      case "Wellness":
-        return "bg-blue-500 hover:bg-blue-500"
-      case "Activities":
-        return "bg-green-500 hover:bg-green-500"
-      case "Dining":
-        return "bg-amber-500 hover:bg-amber-500"
-      case "Accommodation":
-        return "bg-purple-500 hover:bg-purple-500"
-      case "Transportation":
-        return "bg-gray-500 hover:bg-gray-500"
-      case "Entertainment":
-        return "bg-pink-500 hover:bg-pink-500"
-      default:
-        return "bg-slate-500 hover:bg-slate-500"
-    }
-  }
-
+  // Return the component UI
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center justify-between">
@@ -193,9 +206,11 @@ export default function ServicesPage() {
                 <Label htmlFor="category">Category</Label>
                 <select
                   id="category"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-m uted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   value={newService.category}
-                  onChange={(e) => setNewService({ ...newService, category: e.target.value })}
+                  onChange={(e) =>
+                    setNewService({ ...newService, category: e.target.value })
+                  }
                 >
                   {categories.map((category) => (
                     <option key={category} value={category}>
@@ -209,7 +224,9 @@ export default function ServicesPage() {
                 <Textarea
                   id="description"
                   value={newService.description}
-                  onChange={(e) => setNewService({ ...newService, description: e.target.value })}
+                  onChange={(e) =>
+                    setNewService({ ...newService, description: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -218,7 +235,12 @@ export default function ServicesPage() {
                   id="pointValue"
                   type="number"
                   value={newService.pointValue}
-                  onChange={(e) => setNewService({ ...newService, pointValue: Number.parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setNewService({
+                      ...newService,
+                      pointValue: Number.parseInt(e.target.value) || 0,
+                    })
+                  }
                 />
               </div>
             </div>
@@ -235,7 +257,9 @@ export default function ServicesPage() {
       <Card>
         <CardHeader className="pb-3">
           <CardTitle>Services Management</CardTitle>
-          <CardDescription>Manage your resort services, categorize them, and set point values.</CardDescription>
+          <CardDescription>
+            Manage your resort services, categorize them, and set point values.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="flex items-center justify-between mb-4">
@@ -279,7 +303,9 @@ export default function ServicesPage() {
                   <TableRow key={service.id}>
                     <TableCell className="font-medium">{service.name}</TableCell>
                     <TableCell>
-                      <Badge className={getCategoryColor(service.category)}>{service.category}</Badge>
+                      <Badge className="bg-blue-500 hover:bg-blue-500">
+                        {service.category}
+                      </Badge>
                     </TableCell>
                     <TableCell className="max-w-xs truncate">{service.description}</TableCell>
                     <TableCell>{service.pointValue}</TableCell>
@@ -294,7 +320,9 @@ export default function ServicesPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleEditService(service)}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditService(service)}>
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           <DropdownMenuItem
                             className="text-destructive focus:text-destructive"
@@ -327,16 +355,20 @@ export default function ServicesPage() {
                 <Input
                   id="edit-name"
                   value={currentService.name}
-                  onChange={(e) => setCurrentService({ ...currentService, name: e.target.value })}
+                  onChange={(e) =>
+                    setCurrentService({ ...currentService, name: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
                 <Label htmlFor="edit-category">Category</Label>
                 <select
                   id="edit-category"
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   value={currentService.category}
-                  onChange={(e) => setCurrentService({ ...currentService, category: e.target.value })}
+                  onChange={(e) =>
+                    setCurrentService({ ...currentService, category: e.target.value })
+                  }
                 >
                   {categories.map((category) => (
                     <option key={category} value={category}>
@@ -350,7 +382,9 @@ export default function ServicesPage() {
                 <Textarea
                   id="edit-description"
                   value={currentService.description}
-                  onChange={(e) => setCurrentService({ ...currentService, description: e.target.value })}
+                  onChange={(e) =>
+                    setCurrentService({ ...currentService, description: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -360,7 +394,10 @@ export default function ServicesPage() {
                   type="number"
                   value={currentService.pointValue}
                   onChange={(e) =>
-                    setCurrentService({ ...currentService, pointValue: Number.parseInt(e.target.value) || 0 })
+                    setCurrentService({
+                      ...currentService,
+                      pointValue: Number.parseInt(e.target.value) || 0,
+                    })
                   }
                 />
               </div>

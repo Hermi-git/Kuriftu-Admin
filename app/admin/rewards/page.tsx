@@ -1,7 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, Download, MoreHorizontal, Plus, Search, SlidersHorizontal } from "lucide-react"
+import {
+  ChevronDown,
+  Download,
+  MoreHorizontal,
+  Plus,
+  Search,
+  SlidersHorizontal,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -28,8 +35,18 @@ import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
 import { useToast } from "@/components/ui/use-toast"
 
-// Mock data
-const initialRewards = [
+// Define a Reward interface
+interface Reward {
+  id: string
+  name: string
+  description: string
+  pointValue: number
+  isActive: boolean
+  createdAt: string
+}
+
+// Updated mock data with explicit types
+const initialRewards: Reward[] = [
   {
     id: "1",
     name: "Free Night Stay",
@@ -73,12 +90,13 @@ const initialRewards = [
 ]
 
 export default function RewardsPage() {
-  const [rewards, setRewards] = useState(initialRewards)
+  const [rewards, setRewards] = useState<Reward[]>(initialRewards)
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddRewardOpen, setIsAddRewardOpen] = useState(false)
   const [isEditRewardOpen, setIsEditRewardOpen] = useState(false)
-  const [currentReward, setCurrentReward] = useState(null)
-  const [newReward, setNewReward] = useState({
+  const [currentReward, setCurrentReward] = useState<Reward | null>(null)
+  // newReward state without id & createdAt (they are generated)
+  const [newReward, setNewReward] = useState<Omit<Reward, "id" | "createdAt">>({
     name: "",
     description: "",
     pointValue: 0,
@@ -89,12 +107,12 @@ export default function RewardsPage() {
   const filteredRewards = rewards.filter(
     (reward) =>
       reward.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      reward.description.toLowerCase().includes(searchTerm.toLowerCase()),
+      reward.description.toLowerCase().includes(searchTerm.toLowerCase())
   )
 
   const handleAddReward = () => {
     const id = (rewards.length + 1).toString()
-    const reward = {
+    const reward: Reward = {
       id,
       ...newReward,
       createdAt: new Date().toISOString().split("T")[0],
@@ -115,13 +133,17 @@ export default function RewardsPage() {
     })
   }
 
-  const handleEditReward = (reward) => {
+  const handleEditReward = (reward: Reward) => {
     setCurrentReward(reward)
     setIsEditRewardOpen(true)
   }
 
   const handleUpdateReward = () => {
-    const updatedRewards = rewards.map((reward) => (reward.id === currentReward.id ? currentReward : reward))
+    if (!currentReward) return
+
+    const updatedRewards = rewards.map((reward) =>
+      reward.id === currentReward.id ? currentReward : reward
+    )
 
     setRewards(updatedRewards)
     setIsEditRewardOpen(false)
@@ -132,7 +154,7 @@ export default function RewardsPage() {
     })
   }
 
-  const handleDeleteReward = (id) => {
+  const handleDeleteReward = (id: string) => {
     const updatedRewards = rewards.filter((reward) => reward.id !== id)
     setRewards(updatedRewards)
 
@@ -142,7 +164,7 @@ export default function RewardsPage() {
     })
   }
 
-  const handleToggleStatus = (id) => {
+  const handleToggleStatus = (id: string) => {
     const updatedRewards = rewards.map((reward) => {
       if (reward.id === id) {
         return { ...reward, isActive: !reward.isActive }
@@ -153,10 +175,12 @@ export default function RewardsPage() {
     setRewards(updatedRewards)
 
     const reward = rewards.find((r) => r.id === id)
-    toast({
-      title: reward.isActive ? "Reward Deactivated" : "Reward Activated",
-      description: `${reward.name} has been ${reward.isActive ? "deactivated" : "activated"}.`,
-    })
+    if (reward) {
+      toast({
+        title: reward.isActive ? "Reward Deactivated" : "Reward Activated",
+        description: `${reward.name} has been ${reward.isActive ? "deactivated" : "activated"}.`,
+      })
+    }
   }
 
   return (
@@ -181,7 +205,9 @@ export default function RewardsPage() {
                 <Input
                   id="name"
                   value={newReward.name}
-                  onChange={(e) => setNewReward({ ...newReward, name: e.target.value })}
+                  onChange={(e) =>
+                    setNewReward({ ...newReward, name: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -189,7 +215,9 @@ export default function RewardsPage() {
                 <Textarea
                   id="description"
                   value={newReward.description}
-                  onChange={(e) => setNewReward({ ...newReward, description: e.target.value })}
+                  onChange={(e) =>
+                    setNewReward({ ...newReward, description: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -198,7 +226,12 @@ export default function RewardsPage() {
                   id="pointValue"
                   type="number"
                   value={newReward.pointValue}
-                  onChange={(e) => setNewReward({ ...newReward, pointValue: Number.parseInt(e.target.value) || 0 })}
+                  onChange={(e) =>
+                    setNewReward({
+                      ...newReward,
+                      pointValue: Number.parseInt(e.target.value) || 0,
+                    })
+                  }
                 />
               </div>
               <div className="flex items-center gap-2">
@@ -208,7 +241,9 @@ export default function RewardsPage() {
                 <Switch
                   id="isActive"
                   checked={newReward.isActive}
-                  onCheckedChange={(checked) => setNewReward({ ...newReward, isActive: checked })}
+                  onCheckedChange={(checked) =>
+                    setNewReward({ ...newReward, isActive: checked })
+                  }
                 />
               </div>
             </div>
@@ -274,11 +309,17 @@ export default function RewardsPage() {
                     <TableCell>{reward.pointValue.toLocaleString()}</TableCell>
                     <TableCell>
                       <div className="flex items-center gap-2">
-                        <div className={`h-2 w-2 rounded-full ${reward.isActive ? "bg-green-500" : "bg-gray-400"}`} />
+                        <div
+                          className={`h-2 w-2 rounded-full ${
+                            reward.isActive ? "bg-green-500" : "bg-gray-400"
+                          }`}
+                        />
                         <span>{reward.isActive ? "Active" : "Inactive"}</span>
                       </div>
                     </TableCell>
-                    <TableCell>{new Date(reward.createdAt).toLocaleDateString()}</TableCell>
+                    <TableCell>
+                      {new Date(reward.createdAt).toLocaleDateString()}
+                    </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
@@ -289,7 +330,9 @@ export default function RewardsPage() {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                          <DropdownMenuItem onClick={() => handleEditReward(reward)}>Edit</DropdownMenuItem>
+                          <DropdownMenuItem onClick={() => handleEditReward(reward)}>
+                            Edit
+                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => handleToggleStatus(reward.id)}>
                             {reward.isActive ? "Deactivate" : "Activate"}
                           </DropdownMenuItem>
@@ -325,7 +368,9 @@ export default function RewardsPage() {
                 <Input
                   id="edit-name"
                   value={currentReward.name}
-                  onChange={(e) => setCurrentReward({ ...currentReward, name: e.target.value })}
+                  onChange={(e) =>
+                    setCurrentReward({ ...currentReward, name: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -333,7 +378,9 @@ export default function RewardsPage() {
                 <Textarea
                   id="edit-description"
                   value={currentReward.description}
-                  onChange={(e) => setCurrentReward({ ...currentReward, description: e.target.value })}
+                  onChange={(e) =>
+                    setCurrentReward({ ...currentReward, description: e.target.value })
+                  }
                 />
               </div>
               <div className="grid gap-2">
@@ -343,7 +390,10 @@ export default function RewardsPage() {
                   type="number"
                   value={currentReward.pointValue}
                   onChange={(e) =>
-                    setCurrentReward({ ...currentReward, pointValue: Number.parseInt(e.target.value) || 0 })
+                    setCurrentReward({
+                      ...currentReward,
+                      pointValue: Number.parseInt(e.target.value) || 0,
+                    })
                   }
                 />
               </div>
@@ -354,7 +404,9 @@ export default function RewardsPage() {
                 <Switch
                   id="edit-isActive"
                   checked={currentReward.isActive}
-                  onCheckedChange={(checked) => setCurrentReward({ ...currentReward, isActive: checked })}
+                  onCheckedChange={(checked) =>
+                    setCurrentReward({ ...currentReward, isActive: checked })
+                  }
                 />
               </div>
             </div>

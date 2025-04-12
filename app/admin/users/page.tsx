@@ -29,14 +29,13 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useToast } from "@/components/ui/use-toast"
 
-// Mock data
 const initialUsers = [
   {
     id: "1",
     name: "John Doe",
     email: "john@example.com",
     status: "active",
-    tier: "Gold",
+    tier: "Mesafint / Makulla", 
     points: 1250,
     joinDate: "2023-01-15",
   },
@@ -45,7 +44,7 @@ const initialUsers = [
     name: "Jane Smith",
     email: "jane@example.com",
     status: "active",
-    tier: "Silver",
+    tier: "Ras / Derw-a", 
     points: 750,
     joinDate: "2023-02-20",
   },
@@ -54,7 +53,7 @@ const initialUsers = [
     name: "Michael Johnson",
     email: "michael@example.com",
     status: "inactive",
-    tier: "Bronze",
+    tier: "Fitawrari/ Fullar", 
     points: 350,
     joinDate: "2023-03-10",
   },
@@ -63,7 +62,7 @@ const initialUsers = [
     name: "Sarah Williams",
     email: "sarah@example.com",
     status: "active",
-    tier: "Platinum",
+    tier: "Nigus/ Moggisa", 
     points: 2500,
     joinDate: "2022-11-05",
   },
@@ -72,7 +71,7 @@ const initialUsers = [
     name: "David Brown",
     email: "david@example.com",
     status: "active",
-    tier: "Gold",
+    tier: "Mesafint / Makulla", 
     points: 1100,
     joinDate: "2023-01-30",
   },
@@ -83,11 +82,11 @@ export default function UsersPage() {
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddUserOpen, setIsAddUserOpen] = useState(false)
   const [isEditUserOpen, setIsEditUserOpen] = useState(false)
-  const [currentUser, setCurrentUser] = useState(null)
+  const [currentUser, setCurrentUser] = useState<typeof initialUsers[number] | null>(null)
   const [newUser, setNewUser] = useState({
     name: "",
     email: "",
-    tier: "Bronze",
+    tier: "Fitawrari/ Fullar", 
     points: 0,
   })
   const { toast } = useToast()
@@ -112,7 +111,7 @@ export default function UsersPage() {
     setNewUser({
       name: "",
       email: "",
-      tier: "Bronze",
+      tier: "Fitawrari/ Fullar",
       points: 0,
     })
     setIsAddUserOpen(false)
@@ -123,12 +122,13 @@ export default function UsersPage() {
     })
   }
 
-  const handleEditUser = (user) => {
+  const handleEditUser = (user: typeof initialUsers[number]) => {
     setCurrentUser(user)
     setIsEditUserOpen(true)
   }
 
   const handleUpdateUser = () => {
+    if (!currentUser) return;
     const updatedUsers = users.map((user) => (user.id === currentUser.id ? currentUser : user))
 
     setUsers(updatedUsers)
@@ -140,7 +140,7 @@ export default function UsersPage() {
     })
   }
 
-  const handleDeleteUser = (id) => {
+  const handleDeleteUser = (id: string) => {
     const updatedUsers = users.filter((user) => user.id !== id)
     setUsers(updatedUsers)
 
@@ -150,18 +150,19 @@ export default function UsersPage() {
     })
   }
 
-  const getStatusColor = (status) => {
+  const getStatusColor = (status: string) => {
     return status === "active" ? "bg-green-500" : "bg-gray-400"
   }
 
-  const getTierColor = (tier) => {
+  const getTierColor = (tier: string) => {
     switch (tier) {
-      case "Platinum":
+      case "Nigus/ Moggisa": 
         return "bg-purple-500"
-      case "Gold":
+      case "Mesafint / Makulla": 
         return "bg-yellow-500"
-      case "Silver":
+      case "Ras / Derw-a": 
         return "bg-gray-400"
+      case "Fitawrari/ Fullar": 
       default:
         return "bg-amber-700"
     }
@@ -209,10 +210,10 @@ export default function UsersPage() {
                   value={newUser.tier}
                   onChange={(e) => setNewUser({ ...newUser, tier: e.target.value })}
                 >
-                  <option value="Bronze">Bronze</option>
-                  <option value="Silver">Silver</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Platinum">Platinum</option>
+                  <option value="Fitawrari/ Fullar">Fitawrari/ Fullar</option>
+                  <option value="Ras / Derw-a">Ras / Derw-a</option>
+                  <option value="Mesafint / Makulla">Mesafint / Makulla</option>
+                  <option value="Nigus/ Moggisa">Nigus/ Moggisa</option>
                 </select>
               </div>
               <div className="grid gap-2">
@@ -382,10 +383,10 @@ export default function UsersPage() {
                   value={currentUser.tier}
                   onChange={(e) => setCurrentUser({ ...currentUser, tier: e.target.value })}
                 >
-                  <option value="Bronze">Bronze</option>
-                  <option value="Silver">Silver</option>
-                  <option value="Gold">Gold</option>
-                  <option value="Platinum">Platinum</option>
+                  <option value="Fitawrari/ Fullar">Fitawrari/ Fullar</option>
+                  <option value="Ras / Derw-a">Ras / Derw-a</option>
+                  <option value="Mesafint / Makulla">Mesafint / Makulla</option>
+                  <option value="Nigus/ Moggisa">Nigus/ Moggisa</option>
                 </select>
               </div>
               <div className="grid gap-2">
