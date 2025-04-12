@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { SetStateAction, useState } from "react"
 import { ChevronDown, Download, MoreHorizontal, Plus, Search, SlidersHorizontal } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
@@ -30,56 +30,183 @@ import { useToast } from "@/components/ui/use-toast"
 
 // Mock data
 const initialServices = [
-  {
-    id: "1",
-    name: "Spa Treatment",
-    category: "Wellness",
-    description: "Relaxing spa treatments including massage, facials, and body scrubs.",
-    pointValue: 200,
-    createdAt: "2023-01-15",
-  },
-  {
-    id: "2",
-    name: "Lake Tour",
-    category: "Activities",
-    description: "Guided boat tour of the lake with refreshments.",
-    pointValue: 150,
-    createdAt: "2023-02-10",
-  },
-  {
-    id: "3",
-    name: "Fine Dining",
-    category: "Dining",
-    description: "Gourmet dining experience at our lakeside restaurant.",
-    pointValue: 180,
-    createdAt: "2023-03-05",
-  },
-  {
-    id: "4",
-    name: "Room Service",
-    category: "Accommodation",
-    description: "In-room dining and services.",
-    pointValue: 100,
-    createdAt: "2023-04-20",
-  },
-  {
-    id: "5",
-    name: "Airport Transfer",
-    category: "Transportation",
-    description: "Luxury transportation between airport and resort.",
-    pointValue: 120,
-    createdAt: "2023-05-15",
-  },
+    {
+      id: "1",
+      name: "Spa Treatment",
+      category: "Wellness",
+      description: "Relaxing spa treatments including massage, facials, and body scrubs.",
+      pointValue: 200,
+      createdAt: "2023-01-15",
+    },
+    {
+      id: "2",
+      name: "Lake Tour",
+      category: "Activities",
+      description: "Guided boat tour of the lake with refreshments.",
+      pointValue: 150,
+      createdAt: "2023-02-10",
+    },
+    {
+      id: "3",
+      name: "Fine Dining",
+      category: "Dining",
+      description: "Gourmet dining experience at our lakeside restaurant.",
+      pointValue: 180,
+      createdAt: "2023-03-05",
+    },
+    {
+      id: "4",
+      name: "Room Service",
+      category: "Accommodation",
+      description: "In-room dining and services.",
+      pointValue: 100,
+      createdAt: "2023-04-20",
+    },
+    {
+      id: "5",
+      name: "Airport Transfer",
+      category: "Transportation",
+      description: "Luxury transportation between airport and resort.",
+      pointValue: 120,
+      createdAt: "2023-05-15",
+    },
+    {
+      id: "6",
+      name: "Sauna & Steam Room",
+      category: "Wellness",
+      description: "Unwind in our fully-equipped sauna and steam facilities.",
+      pointValue: 100,
+      createdAt: "2023-06-01",
+    },
+    {
+      id: "7",
+      name: "Yoga Session",
+      category: "Wellness",
+      description: "Daily group yoga sessions with experienced instructors.",
+      pointValue: 80,
+      createdAt: "2023-06-10",
+    },
+    {
+      id: "8",
+      name: "Nature Hike",
+      category: "Activities",
+      description: "Scenic guided hikes in the nearby forest trails.",
+      pointValue: 90,
+      createdAt: "2023-07-01",
+    },
+    {
+      id: "9",
+      name: "Cooking Class",
+      category: "Activities",
+      description: "Learn to cook local dishes with our expert chefs.",
+      pointValue: 130,
+      createdAt: "2023-07-15",
+    },
+    {
+      id: "10",
+      name: "Breakfast Buffet",
+      category: "Dining",
+      description: "Unlimited access to our morning buffet with continental and local options.",
+      pointValue: 70,
+      createdAt: "2023-07-20",
+    },
+    {
+      id: "11",
+      name: "Private Dining",
+      category: "Dining",
+      description: "Enjoy a romantic dinner setup by the lake.",
+      pointValue: 160,
+      createdAt: "2023-08-01",
+    },
+    {
+      id: "12",
+      name: "Daily Housekeeping",
+      category: "Accommodation",
+      description: "Room cleaning and towel replacement every day.",
+      pointValue: 60,
+      createdAt: "2023-08-10",
+    },
+    {
+      id: "13",
+      name: "Laundry Service",
+      category: "Accommodation",
+      description: "Same-day laundry and ironing service.",
+      pointValue: 90,
+      createdAt: "2023-08-20",
+    },
+    {
+      id: "14",
+      name: "Car Rental",
+      category: "Transportation",
+      description: "Rent vehicles for personal use or guided tours.",
+      pointValue: 140,
+      createdAt: "2023-09-01",
+    },
+    {
+      id: "15",
+      name: "Valet Parking",
+      category: "Transportation",
+      description: "Professional valet service for all guests.",
+      pointValue: 60,
+      createdAt: "2023-09-10",
+    },
+    {
+      id: "16",
+      name: "Live Music Nights",
+      category: "Entertainment",
+      description: "Evening performances by local bands and artists.",
+      pointValue: 110,
+      createdAt: "2023-09-20",
+    },
+    {
+      id: "17",
+      name: "Movie Night",
+      category: "Entertainment",
+      description: "Outdoor screening of popular and classic films.",
+      pointValue: 70,
+      createdAt: "2023-10-01",
+    },
+    {
+      id: "18",
+      name: "Kids Play Zone",
+      category: "Entertainment",
+      description: "Indoor and outdoor play area with supervision.",
+      pointValue: 60,
+      createdAt: "2023-10-10",
+    },
+    {
+      id: "19",
+      name: "Game Room Access",
+      category: "Entertainment",
+      description: "Arcade games, billiards, and board games.",
+      pointValue: 80,
+      createdAt: "2023-10-15",
+    },
+    {
+      id: "20",
+      name: "Personal Fitness Trainer",
+      category: "Wellness",
+      description: "One-on-one fitness sessions with a certified trainer.",
+      pointValue: 150,
+      createdAt: "2023-10-20",
+    }
 ]
 
 const categories = ["Wellness", "Activities", "Dining", "Accommodation", "Transportation", "Entertainment", "Other"]
-
+type Service = {
+  id: string;
+  name: string;
+  category: string;
+  description: string;
+  pointValue: number;
+  createdAt: string;
+};
 export default function ServicesPage() {
   const [services, setServices] = useState(initialServices)
   const [searchTerm, setSearchTerm] = useState("")
   const [isAddServiceOpen, setIsAddServiceOpen] = useState(false)
   const [isEditServiceOpen, setIsEditServiceOpen] = useState(false)
-  const [currentService, setCurrentService] = useState(null)
+  const [currentService, setCurrentService] = useState<Service | null>(null)
   const [newService, setNewService] = useState({
     name: "",
     category: "Wellness",
@@ -118,12 +245,15 @@ export default function ServicesPage() {
     })
   }
 
-  const handleEditService = (service) => {
+  const handleEditService = (service: Service | null) => {
     setCurrentService(service)
     setIsEditServiceOpen(true)
   }
 
   const handleUpdateService = () => {
+    if(!currentService){
+      return ;
+    }
     const updatedServices = services.map((service) => (service.id === currentService.id ? currentService : service))
 
     setServices(updatedServices)
@@ -135,7 +265,7 @@ export default function ServicesPage() {
     })
   }
 
-  const handleDeleteService = (id) => {
+  const handleDeleteService = (id: string) => {
     const updatedServices = services.filter((service) => service.id !== id)
     setServices(updatedServices)
 
@@ -145,7 +275,7 @@ export default function ServicesPage() {
     })
   }
 
-  const getCategoryColor = (category) => {
+  const getCategoryColor = (category: string) => {
     switch (category) {
       case "Wellness":
         return "bg-blue-500 hover:bg-blue-500"

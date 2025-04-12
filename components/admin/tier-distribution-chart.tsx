@@ -3,10 +3,10 @@
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from "recharts"
 
 const data = [
-  { name: "Bronze", value: 450 },
-  { name: "Silver", value: 350 },
-  { name: "Gold", value: 280 },
-  { name: "Platinum", value: 168 },
+  { name: "Nigus/Mogassa", value: 450 },
+  { name: "Mesafint/Makulla", value: 350 },
+  { name: "Ras/Derwa-a", value: 280 },
+  { name: "Fitawrari/fullas", value: 168 },
 ]
 
 const COLORS = ["#A77B4F", "#C0C0C0", "#FFD700", "#E5E4E2"]

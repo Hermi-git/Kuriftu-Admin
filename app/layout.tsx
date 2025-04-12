@@ -9,8 +9,11 @@ const inter = Inter({ subsets: ["latin"] })
 export const metadata: Metadata = {
   title: "Kuriftu Resort Admin",
   description: "Admin Dashboard for Kuriftu Resort Loyalty & Membership System",
-    generator: 'v0.dev'
+  icons: {
+    icon: "/Assets/images/logo.e2cce34.svg", 
+  },
 }
+
 
 export default function RootLayout({
   children,
@@ -27,6 +30,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-import './globals.css'
