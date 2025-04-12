@@ -1,11 +1,12 @@
 "use client"
 
 import type React from "react"
-
+import Image from "next/image";
+import KuriftuLogo from "@/public/assets/images/logo.e2cce34.svg";
 import { useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { BarChart3, Gift, Home, Menu, PalmtreeIcon, Settings, ShoppingBag, Users } from "lucide-react"
+import { BarChart3, Gift, Home, Menu, Settings, ShoppingBag, Users } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
@@ -65,9 +66,10 @@ export function Sidebar({ className }: SidebarProps) {
           <div className="flex flex-col h-full">
             <div className="px-3 py-4 border-b">
               <div className="flex items-center gap-2 px-2">
-                <PalmtreeIcon className="h-6 w-6 text-primary" />
-                <span className="text-lg font-bold">Kuriftu Resort</span>
+                <Image src={KuriftuLogo} alt="Kuriftu Resort Logo" width={64} height={64} />
+                {/* <span className="text-lg font-bold">Kuriftu Resort</span> */}
               </div>
+
             </div>
             <div className="flex-1 overflow-auto py-2">
               <nav className="grid gap-1 px-2">
@@ -100,7 +102,7 @@ export function Sidebar({ className }: SidebarProps) {
       >
         <div className="px-3 py-4 border-b">
           <div className="flex items-center gap-2 px-2">
-            <PalmtreeIcon className="h-6 w-6 text-primary" />
+            <Image src={KuriftuLogo} alt="Kuriftu Resort Logo" width={64} height={64} />
             {isOpen && <span className="text-lg font-bold">Kuriftu Resort</span>}
           </div>
         </div>
